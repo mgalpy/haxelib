@@ -867,7 +867,7 @@ class Main {
 			if( n.charAt(0) == "/" || n.charAt(0) == "\\" || n.split("..").length > 1 )
 				throw "Invalid filename : "+n;
 
-			if (!settings.debug) {
+			if (!settings.quiet) {
 				var percent = Std.int((i / total) * 100);
 				Sys.print('${i + 1}/$total ($percent%)\r');
 			}
