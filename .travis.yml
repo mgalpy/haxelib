@@ -105,7 +105,7 @@ script:
 deploy:
   provider: releases
   api_key: ${api_key}
-  file: "/haxelib/haxelib.exe"
+  file: "haxelib/haxelib.exe"
   skip_cleanup: true
   on:
     all_branches: true
