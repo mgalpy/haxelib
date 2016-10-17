@@ -101,12 +101,3 @@ install:
 script:
   # run our CI script
   - haxe ci.hxml
-
-deploy:
-  provider: releases
-  api_key: ${api_key}
-  file: "haxelib/haxelib.exe"
-  skip_cleanup: true
-  on:
-    all_branches: true
-    tags: true
