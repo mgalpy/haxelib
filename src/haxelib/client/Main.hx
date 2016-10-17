@@ -66,10 +66,12 @@ class ProgressOut extends haxe.io.Output {
 
 	function report(n) {
 		cur += n;
-		if( max == null )
-			Sys.print(cur+" bytes\r");
-		else
-			Sys.print(cur+"/"+max+" ("+Std.int((cur*100.0)/max)+"%)\r");
+		if (!settings.quiet) {
+			if( max == null )
+				Sys.print(cur+" bytes\r");
+			else
+				Sys.print(cur+"/"+max+" ("+Std.int((cur*100.0)/max)+"%)\r");
+		}
 	}
 
 	public override function writeByte(c) {
@@ -126,7 +128,9 @@ class ProgressIn extends haxe.io.Input {
 
 	function report( nbytes : Int ) {
 		pos += nbytes;
-		Sys.print( Std.int((pos * 100.0) / tot) + "%\r" );
+		if (!settings.quiet) {
+			Sys.print( Std.int((pos * 100.0) / tot) + "%\r" );
+		}
 	}
 
 }
