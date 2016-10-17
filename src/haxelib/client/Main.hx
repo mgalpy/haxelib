@@ -56,17 +56,19 @@ class ProgressOut extends haxe.io.Output {
 	var startSize : Int;
 	var max : Null<Int>;
 	var start : Float;
+	var quiet : Bool;
 
-	public function new(o, currentSize) {
+	public function new(o, currentSize, quiet) {
 		this.o = o;
 		startSize = currentSize;
 		cur = currentSize;
 		start = Timer.stamp();
+		this.quiet = quiet;
 	}
 
 	function report(n) {
 		cur += n;
-		if (!settings.quiet) {
+		if (!quiet) {
 			if( max == null )
 				Sys.print(cur+" bytes\r");
 			else
@@ -107,11 +109,13 @@ class ProgressIn extends haxe.io.Input {
 	var i : haxe.io.Input;
 	var pos : Int;
 	var tot : Int;
+	var quiet: Bool;
 
-	public function new( i, tot ) {
+	public function new( i, tot , quiet) {
 		this.i = i;
 		this.pos = 0;
 		this.tot = tot;
+		this.quiet = quiet;
 	}
 
 	public override function readByte() {
@@ -128,7 +132,7 @@ class ProgressIn extends haxe.io.Input {
 
 	function report( nbytes : Int ) {
 		pos += nbytes;
-		if (!settings.quiet) {
+		if (!quiet) {
 			Sys.print( Std.int((pos * 100.0) / tot) + "%\r" );
 		}
 	}
@@ -590,7 +594,7 @@ class Main {
 		var h = createHttpRequest("http://"+SERVER.host+":"+SERVER.port+"/"+SERVER.url);
 		h.onError = function(e) throw e;
 		h.onData = print;
-		h.fileTransfer("file",id,new ProgressIn(new haxe.io.BytesInput(data),data.length),data.length);
+		h.fileTransfer("file",id,new ProgressIn(new haxe.io.BytesInput(data),data.length),data.length, settings.quiet);
 		print("Sending data.... ");
 		h.request(true);
 
@@ -808,7 +812,7 @@ class Main {
 		if (currentSize > 0)
 			h.addHeader("range", "bytes="+currentSize + "-");
 
-		var progress = new ProgressOut(out, currentSize);
+		var progress = new ProgressOut(out, currentSize, settings.quiet);
 
 		var has416Status = false;
 		h.onStatus = function(status) {
