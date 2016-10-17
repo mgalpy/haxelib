@@ -103,13 +103,10 @@ script:
   - haxe ci.hxml
 
 deploy:
-  provider: elasticbeanstalk
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  region: $AWS_REGION
-  app: $EB_APP
-  env: ${TRAVIS_BRANCH}-lib-haxe-org
-  bucket_name: $EB_BUCKET
+  provider: releases
+  api_key: ${api_key}
+  file: "/haxelib/haxelib.exe"
+  skip_cleanup: true
   on:
     all_branches: true
-    condition: $AWS_ACCESS_KEY && $DEPLOY && ($TRAVIS_BRANCH = master || $TRAVIS_BRANCH = development)
+    tags: true
