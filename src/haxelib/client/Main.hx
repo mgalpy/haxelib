@@ -594,7 +594,7 @@ class Main {
 		var h = createHttpRequest("http://"+SERVER.host+":"+SERVER.port+"/"+SERVER.url);
 		h.onError = function(e) throw e;
 		h.onData = print;
-		h.fileTransfer("file",id,new ProgressIn(new haxe.io.BytesInput(data),data.length),data.length, settings.quiet);
+		h.fileTransfer("file",id,new ProgressIn(new haxe.io.BytesInput(data),data.length, settings.quiet),data.length);
 		print("Sending data.... ");
 		h.request(true);
 
